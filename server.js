@@ -20,7 +20,7 @@ app.use(helmet({
   noSniff: {},
   hidePoweredBy: {setTo: "PHP 7.4.3"}
   // ◘ ◘ ◘ ◘
-  // , noCache: {}, // TESTS REQUIRE NOTHING BE CACHED ON THE CLIENT'S SIDE, BUT THIS NEEDS TO BE DISABLED FOR THE SPRITES TO LOAD 
+  , noCache: {}, // TESTS REQUIRE NOTHING BE CACHED ON THE CLIENT'S SIDE, BUT THIS NEEDS TO BE DISABLED FOR THE SPRITES TO LOAD 
   // ◘ ◘ ◘ ◘
 }))
 app.use('/public', express.static(process.cwd() + '/public'));
