@@ -11,13 +11,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../public/style.css" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>  
+    <!-- <script src="..\node_modules\socket.io-client\dist\socket.io.js"></script> DIDN'T WORK -->
+    <!-- <script src="../node_modules/socket.io-client/dist/socket.io.js"></script> DIDN'T WORK -->
+    <!-- <script src="https://cdn.socket.io/2.3.0/socket.io.min.js"></script> DIDN'T WORK -->
   </head>
   <body>
-    <header>
+    <header id="header">
       <h1>Secure Real Time Multiplayer Game</h1>
     </header>
     <hr style="margin: 25px" />
+    <span id="data">
+      <span>
+        <p id="score-title">SCORE: </p>
+        <p id="score">0</p>
+      </span>
+      <span>
+        <p id="players">ONLINE PLAYERS: </p>
+        <p id="player-count">0</p>
+      </span>
+      <span>
+        <p id="rank">Rank: 0/0</p>
+      </span>
+    </span>
     <div class="container">
       <canvas 
         ref="game"
