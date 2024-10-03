@@ -1,4 +1,4 @@
-# This is my real-time multiplyer game
+# This is my real-time multiplayer game
 
 This was the final certification project for freeCodeCamp's Information Security course (which is also the 10th course when taken in order) and it's another project I'm proud to showcase because I'm very happy with how it turned out. The programming language is JavaScript, and it involves working with Express.js to start a server, Helmet.js for security measures and setting HTTP headers, a considerable amount of learning to work with the Canvas API for rendering the game, and a deep-dive in Socket.io for creating the real-time client-server communication and multiplayer functionality. These two were most certainly the highlights of the project, as I hadn't worked with Canvas for a few months, and Socket.io was pretty much new to me.
 
