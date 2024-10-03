@@ -4,6 +4,8 @@ This was the final certification project for freeCodeCamp's Information Security
 
 Working with sockets also meant there were a lot of "moving" parts at play when it came to sending and receiving information, but while this might seem daunting at first, I actually found it rather entertaining and very satisfying once I managed to get in "the zone": that moment in which you're able to hold in your mind all the pieces to your app, you understand how they interact with each other, and you can quickly infer where to look if you run into any problems. This was a great feeling and a real confidence-builder. While I always felt I would work well in this career path, I'm now more sure than ever that I can be a great programmer.
 
+NOTE: to see the most relevant code for the security, Canvas and Socket.io functionality, check out the ./server.js file and the three .mjs files in ./public
+
 # The game
 
 At face-value it's a very simple game: there's one item in the board (referred to as "Collectible"), and all players race to get it. The first player to reach the collectible gets 1 point. Whenever a collectible is collected, it disappears and a new collectible is rendered at a random position in the board. While there's no end to the game, there is a rank system which indicates to each player what their position is in the leaderboard (e.g:  3/6). This rank system is updated dinamically whenever players enter/leave the game and/or gather collectibles, and displays a different rank on each player's screen (unless some players are tied).
@@ -26,9 +28,9 @@ I had previously gone over the basic concepts of this API in a small freeCodeCam
 
 This was "The Big One". Not only was socket.io very new to me, but there were a lot of pieces to this puzzle in my game: different types of information that needed to be shared back-and-forth between the server and the clients, but there were also a lot of specific situations in which said information needed to be sent and received, and this required a lot of thinking-ahead trying to cover as many bases as possible, and then some instances of going back to my code and addressing situations I hadn't been able to foresee (without introducing any breaking changes, of course). As I said previously, being able to get "in the zone" and just keep track in my mind of everything that was going on was a great feeling, and it was one of those instances in which you're working and you simply can't—put—it—down.
 
-## A brief summary of how it works:
+# A brief summary of how it works:
 
-### Server
+## Server (./server.js)
 
 The server stores positional data about each collectible and emits it to all players so they can all see where it is. This information is only transmitted whenever a new collectible is created (so players can see where it is) and whenever a collectible is gathered (so it disappears from all players' screens). There's no need to constantly transmit positional data of the collectible.
 
@@ -38,7 +40,7 @@ The server receives and stores information about the number of connected players
 
 When a player connects, the server gets his/her socket ID and sends this data as well as positional data of the collectible ONLY TO SAID PLAYER, so that he/she can render the positions of the current collectible, and set the id to the socket's id. The client now creates the player at a random point within the board, sends this positional data to the server, where it is stored. Now, positional data of ALL players is sent to ALL players so they can render each rival on their screen.
 
-### Client/Player
+## Client/Player (./public/game.mjs, ./public/Player.mjs and ./public/Collectible.mjs)
 
 Most of the information that is shared is created by each client, as they generate positional data when they connect/disconnect to/from the server, positional data for the collectible everytime they gather one and, most importantly, they're constantly generating positional data everytime they move their avatar.
 
@@ -48,14 +50,14 @@ The same happens whenever a player connects/or disconnects but, in this case, in
 
 When a player connects, the server gets his/her socket ID and emits it to said player ONLY, along with positional data of the current collectible. The client now creates the player at a random point within the board, sends this positional data to the server, where it is stored. Now, positional data of ALL players is sent to ALL players so they can render each rival on their screen (this was also covered in the last paragraph of the Server summary)
 
-### Special consideration
+## Special consideration
 
 Even though the game tries to be real-time, due to the nature of data transmission, every client does experience some lag: their rivals' position is rendered slightly after they actually move. This means that, in some circumstances, a player can see his avatar as being closer to the collectible than a rival's avatar, while in reality the rival is closer. Furthermore, since a collectible claim event is triggered client-side, whenever a player reaches said collectible, on rare occassions, two players who reach a collectible very close in time could both be assigned a point for said collectible, when in reality only one of them should be awarded the point. This is due to the fact that, originally, the point was awarded to the player automatically when he/she gathered a collectible. In order to fix this, I re-thought and tweaked the collectible creation and scoring process.
 
-Original process:
+### Original process:
 Collectible is created → Player/client gathers collectible → Player is awarded a point → Collectible disappears and a new collectible with a new collectible.id is created client-side (*). The server emits to every player the new leaderboard so each of them can calculate and display their rank.  →  player sends positional and id data of this new collectible to the server   →  the server emits the new collectible's data to EVERY player so that everyone can see it.
 
-New flow (changes are marked with ◘):
+### New process (changes are marked with ◘):
 Collectible is created →  ◘ collectible.id is stored as currentCollectibleId ◘  →  Player/client gathers collectible  →   ◘ Player sends a request to the server to update score (request includes the gathered collectible's id and the player's id) ◘  →  ◘ If gathered collectible's id matches currentCollectibleId, that means the player was the first player to reach the collectible ◘  →  ◘ The player is assigned a point served-side and currentCollectibleId is immediately changed to 0 (this means if another player reaches the same collectible right after the first player, when he/she sends the request, the gathered collectible's id will NOT match currentCollectibleId and a point will not be assigned) ◘  →  The server emits to every player the new leaderboard so each of them can calculate and display their rank.  ◘The server also emits a response ONLY to the client who first gathered the collectible◘, triggering creation of a new collectible client-side  (*) →  player sends positional and id data of this new collectible to the server  →  the server emits the new collectible's data to EVERY player so that everyone can see it.
 
 (*) On hindsight, it would probably have been better to handle creation of new collectibles on the server.
