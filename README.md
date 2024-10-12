@@ -6,6 +6,10 @@ Working with sockets also meant there were a lot of "moving" parts at play when 
 
 NOTE: to see the most relevant code for the security, Canvas and Socket.io functionality, check out the ./server.js file and the three .mjs files in ./public
 
+# Where to play
+
+Visit https://real-time-multiplayer-game-for.onrender.com/ . Please be aware that this project is hosted on render.com and, as the website reads, it "will spin down with inactivity, which can delay requests by 50 seconds or more."
+
 # The game
 
 At face-value it's a very simple game: there's one item in the board (referred to as "Collectible"), and all players race to get it. The first player to reach the collectible gets 1 point. Whenever a collectible is collected, it disappears and a new collectible is rendered at a random position in the board. While there's no end to the game, there is a rank system which indicates to each player what their position is in the leaderboard (e.g:  3/6). This rank system is updated dinamically whenever players enter/leave the game and/or gather collectibles, and displays a different rank on each player's screen (unless some players are tied).
