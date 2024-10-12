@@ -119,7 +119,7 @@ const animate = () => {
     requestAnimationFrame(animate);
     
     // ↓ ↓ ↓ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↓ ↓ ↓
-    collectibleAvatar.src=`/sprites/collectible/ItemSpriteSheet.png`
+    collectibleAvatar.src=`../sprites/collectible/ItemSpriteSheet.png`
     if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
     // if(frame>=20){frame=0} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
     if(collectible.frame%4==0 && collectible.num<4){collectible.num++} // CHANGING SPRITE
