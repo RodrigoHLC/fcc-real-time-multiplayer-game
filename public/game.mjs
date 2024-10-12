@@ -193,10 +193,20 @@ const animate = () => {
       ctx.drawImage(rivalAvatar, enemyFrame, 0, 25, 46, rival.x, rival.y, rival.width, rival.height) //25,50
     }  
     // • • • DRAW COLLECTIBLE • • •
+    collectibleAvatar.onload = function(){
     ctx.drawImage(collectibleAvatar, 70*collectible.num, 0, 70, 70, collectible.x, collectible.y, collectible.width, collectible.height) 
+    }
+    collectibleAvatar.onerror = function() {
+    console.error('Error loading image:', collectibleAvatar.src);
+    };
     // • • • DRAW PLAYER • • •
+    playerAvatar.onload = function(){
     ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50th, currentPlayers[rival].height)
-    
+    }
+    playerAvatar.onerror = function() {
+    console.error('Error loading image:', collectibleAvatar.src);
+    };
+  
     // --- ENABLE COLLISION DETECTION ---
     player.collision(collectible) // WILL TRIGGER COLLECTIBLE EVENT IF NECESSARY
 
