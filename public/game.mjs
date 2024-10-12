@@ -116,11 +116,6 @@ socket.on("score array", ( leaderboard)=>{
   collectibleAvatar.src=`/public/sprites/collectible/ItemSpriteSheet.png`
 
   collectibleAvatar.onload = function(){
-    // if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
-    // if(frame>=20){frame=0} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
-    // if(collectible.frame%4==0 && collectible.num<4){collectible.num++} // CHANGING SPRITE
-    // if(num>5){num=1} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
-
     ctx.drawImage(
         collectibleAvatar,
         70 * collectible.num,
@@ -137,7 +132,9 @@ socket.on("score array", ( leaderboard)=>{
   collectibleAvatar.onerror = function() {
     console.error('Error loading image:', collectibleAvatar.src);
   };
-    
+
+  playerAvatar.src = `/public/sprites/player/PlayerSpriteSheet.png`
+  // playerAvatar.onload = function(){
     
     // ↑ ↑ ↑ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↑ ↑ ↑ 
 
@@ -174,7 +171,7 @@ const animate = () => {
       else if(player.facing == "Left"){ playerFrame = 130}
     }
     
-    playerAvatar.src = `/public/sprites/player/PlayerSpriteSheet.png`
+    // playerAvatar.src = `/public/sprites/player/PlayerSpriteSheet.png`
     // ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50
 
     // ORIGINAL IDEA WITH SEPARATE SPRITE FILES
@@ -226,11 +223,12 @@ const animate = () => {
     }
   
     // • • • DRAW PLAYER • • •
-    playerAvatar.onload = function(){
-    ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50th, currentPlayers[rival].height)
+    // playerAvatar.onload = function(){
+    if (playerAvatar.complete) {
+      ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50th, currentPlayers[rival].height)
     }
     playerAvatar.onerror = function() {
-    console.error('Error loading image:', playerAvatar.src);
+      console.error('Error loading image:', playerAvatar.src);
     };
   
     // --- ENABLE COLLISION DETECTION ---
