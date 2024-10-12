@@ -132,11 +132,12 @@ socket.on("score array", ( leaderboard)=>{
   collectibleAvatar.onerror = function() {
     console.error('Error loading image:', collectibleAvatar.src);
   };
+   // ↑ ↑ ↑ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↑ ↑ ↑ 
 
   playerAvatar.src = `/public/sprites/player/PlayerSpriteSheet.png`
   // playerAvatar.onload = function(){
     
-    // ↑ ↑ ↑ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↑ ↑ ↑ 
+   rivalAvatar.src = `/public/sprites/enemies/EnemySpriteSheet.png`
 
 
 const animate = () => {
@@ -196,22 +197,24 @@ const animate = () => {
     // --- BROADCAST PLAYER'S POSITION AT EVERY FRAME ---
     socket.emit("player moves", player.x , player.y, player.facing, player.state, player.id)
 
-    // • • • DRAW PREVIOUS/CURRENT PLAYERS USING THEIR REAL-TIME COORDS FROM currentPlayers • • •
+    // • • • DRAW PREVIOUS/CURRENT RIVALS  USING THEIR REAL-TIME COORDS FROM currentPlayers • • •
     // for(let rival in currentPlayers){
-    for(let rival of Object.values(currentPlayers)){
-      if( rival.id == player.id ){ continue } // AVOID DRAWING PLAYER TWICE
-      // --- SETTING RIVAL SPRITES ---
-      // 1ST ORIGINAL METHOD WITH TWO SEPARATE SPRITES
-      // rivalAvatar.src = `/sprites/enemies/Idle${rival.facing}.png`
-      // ctx.drawImage(rivalAvatar, rival.x, rival.y, rival.width, rival.height) //25,50
-
-      // 2ND METHOD: USING ONLY ONE SPRITE SHEET - ◘ FASTER LOADING ◘
-      rivalAvatar.src = `/public/sprites/enemies/EnemySpriteSheet.png`
-      let enemyFrame;
-      if( rival.facing == "Right"){ enemyFrame = 0}
-      if( rival.facing == "Left"){ enemyFrame = 25}
-      ctx.drawImage(rivalAvatar, enemyFrame, 0, 25, 46, rival.x, rival.y, rival.width, rival.height) //25,50
-    }  
+    if (rivalAvatar.complete) {
+      for(let rival of Object.values(currentPlayers)){
+        if( rival.id == player.id ){ continue } // AVOID DRAWING PLAYER TWICE
+        // --- SETTING RIVAL SPRITES ---
+        // 1ST ORIGINAL METHOD WITH TWO SEPARATE SPRITES
+        // rivalAvatar.src = `/sprites/enemies/Idle${rival.facing}.png`
+        // ctx.drawImage(rivalAvatar, rival.x, rival.y, rival.width, rival.height) //25,50
+  
+        // 2ND METHOD: USING ONLY ONE SPRITE SHEET - ◘ FASTER LOADING ◘
+        // rivalAvatar.src = `/public/sprites/enemies/EnemySpriteSheet.png`
+        let enemyFrame;
+        if( rival.facing == "Right"){ enemyFrame = 0}
+        if( rival.facing == "Left"){ enemyFrame = 25}
+        ctx.drawImage(rivalAvatar, enemyFrame, 0, 25, 46, rival.x, rival.y, rival.width, rival.height) //25,50
+      }
+    }
     // • • • DRAW COLLECTIBLE • • •
     if (collectibleAvatar.complete) {
       if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
@@ -223,13 +226,9 @@ const animate = () => {
     }
   
     // • • • DRAW PLAYER • • •
-    // playerAvatar.onload = function(){
     if (playerAvatar.complete) {
       ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50th, currentPlayers[rival].height)
     }
-    playerAvatar.onerror = function() {
-      console.error('Error loading image:', playerAvatar.src);
-    };
   
     // --- ENABLE COLLISION DETECTION ---
     player.collision(collectible) // WILL TRIGGER COLLECTIBLE EVENT IF NECESSARY
