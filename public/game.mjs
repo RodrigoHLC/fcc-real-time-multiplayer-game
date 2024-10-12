@@ -119,7 +119,7 @@ const animate = () => {
     requestAnimationFrame(animate);
     
     // ↓ ↓ ↓ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↓ ↓ ↓
-    collectibleAvatar.src=`../sprites/collectible/ItemSpriteSheet.png`
+    collectibleAvatar.src=`/sprites/collectible/ItemSpriteSheet.png`
     if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
     // if(frame>=20){frame=0} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
     if(collectible.frame%4==0 && collectible.num<4){collectible.num++} // CHANGING SPRITE
@@ -151,13 +151,13 @@ const animate = () => {
       else if(player.facing == "Left"){ playerFrame = 130}
     }
     
-    playerAvatar.src = `../sprites/player/PlayerSpriteSheet.png`
+    playerAvatar.src = `/sprites/player/PlayerSpriteSheet.png`
     // ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50
 
     // ORIGINAL IDEA WITH SEPARATE SPRITE FILES
     // if(player.state=="idle"){
     //   player.width = 25
-    //   playerAvatar.src = `../sprites/player/Idle${player.facing}.png`
+    //   playerAvatar.src = `/sprites/player/Idle${player.facing}.png`
     // } else if (player.state == "moving"){
     //   player.width = 35
     //   playerAvatar.src = `../sprites/player/Flight${player.facing}.png`
@@ -182,11 +182,11 @@ const animate = () => {
       if( rival.id == player.id ){ continue } // AVOID DRAWING PLAYER TWICE
       // --- SETTING RIVAL SPRITES ---
       // 1ST ORIGINAL METHOD WITH TWO SEPARATE SPRITES
-      // rivalAvatar.src = `../sprites/enemies/Idle${rival.facing}.png`
+      // rivalAvatar.src = `/sprites/enemies/Idle${rival.facing}.png`
       // ctx.drawImage(rivalAvatar, rival.x, rival.y, rival.width, rival.height) //25,50
 
       // 2ND METHOD: USING ONLY ONE SPRITE SHEET - ◘ FASTER LOADING ◘
-      rivalAvatar.src = `../sprites/enemies/EnemySpriteSheet.png`
+      rivalAvatar.src = `/sprites/enemies/EnemySpriteSheet.png`
       let enemyFrame;
       if( rival.facing == "Right"){ enemyFrame = 0}
       if( rival.facing == "Left"){ enemyFrame = 25}
