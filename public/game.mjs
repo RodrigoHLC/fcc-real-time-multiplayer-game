@@ -112,22 +112,45 @@ socket.on("score array", ( leaderboard)=>{
 // • • • • • END OF SOCKET FUNCTIONALITY • • • • • 
 
 
+// ↓ ↓ ↓ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↓ ↓ ↓
+  collectibleAvatar.src=`/public/sprites/collectible/ItemSpriteSheet.png`
+
+  collectibleAvatar.onload = function(){
+    // if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
+    // if(frame>=20){frame=0} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
+    // if(collectible.frame%4==0 && collectible.num<4){collectible.num++} // CHANGING SPRITE
+    // if(num>5){num=1} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
+
+    ctx.drawImage(
+        collectibleAvatar,
+        70 * collectible.num,
+        0,
+        70,
+        70,
+        collectible.x,
+        collectible.y,
+        collectible.width,
+        collectible.height
+    );
+  }
+    
+  collectibleAvatar.onerror = function() {
+    console.error('Error loading image:', collectibleAvatar.src);
+  };
+    
+    
+    // ↑ ↑ ↑ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↑ ↑ ↑ 
+
 
 const animate = () => {
     // --- DELETE PREVIOUS FRAME ---
     ctx.clearRect(10, 10, canvas.width-20, canvas.height-20) // DELETES *INSIDE* THE FRAME
     requestAnimationFrame(animate);
     
-    // ↓ ↓ ↓ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↓ ↓ ↓
-    collectibleAvatar.src=`/public/sprites/collectible/ItemSpriteSheet.png`
-    if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
-    // if(frame>=20){frame=0} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
-    if(collectible.frame%4==0 && collectible.num<4){collectible.num++} // CHANGING SPRITE
-    // if(num>5){num=1} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
     
-    // ↑ ↑ ↑ ANIMATING COLLECTIBLE WITH A SINGLE SPRITE SHEET ↑ ↑ ↑ 
     // -----------------------------------------------------------
     // ↓ ↓ ↓ ANIMATING COLLECTIBLE WITH INDIVIDUAL IMG FILES (MORE LOADING ISSUES) ↓ ↓ ↓
+    
     // collectibleAvatar.src = `/public/sprites/collectible/Item${collectible.num}.png`
     // if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
     // if(collectible.frame%4==0 && collectible.num<4){collectible.num++} // CHANGING SPRITE
@@ -193,12 +216,15 @@ const animate = () => {
       ctx.drawImage(rivalAvatar, enemyFrame, 0, 25, 46, rival.x, rival.y, rival.width, rival.height) //25,50
     }  
     // • • • DRAW COLLECTIBLE • • •
-    collectibleAvatar.onload = function(){
-    ctx.drawImage(collectibleAvatar, 70*collectible.num, 0, 70, 70, collectible.x, collectible.y, collectible.width, collectible.height) 
+    if (collectibleAvatar.complete) {
+      if(collectible.frame<20){collectible.frame++} // FOR FRAMERATE
+      // if(frame>=20){frame=0} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
+      if(collectible.frame%4==0 && collectible.num<4){collectible.num++} // CHANGING SPRITE
+      // if(num>5){num=1} // THIS WOULD BE USEFUL FOR ANIMATION LOOPS
+      // collectibleAvatar.onload = function(){
+      ctx.drawImage(collectibleAvatar, 70*collectible.num, 0, 70, 70, collectible.x, collectible.y, collectible.width, collectible.height) 
     }
-    collectibleAvatar.onerror = function() {
-    console.error('Error loading image:', collectibleAvatar.src);
-    };
+  
     // • • • DRAW PLAYER • • •
     playerAvatar.onload = function(){
     ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50th, currentPlayers[rival].height)
