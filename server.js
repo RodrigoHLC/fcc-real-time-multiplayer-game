@@ -24,8 +24,8 @@ app.use(helmet({
   // ◘ ◘ ◘ ◘
 }))
 app.use('/public', express.static(process.cwd() + '/public'));
-app.use('/assets', express.static(process.cwd() + '/assets')); // UNUSED 
-app.use('/sprites', express.static(process.cwd() + '/sprites')); // ◘ MINE ◘
+// app.use('/assets', express.static(process.cwd() + '/assets')); // UNUSED 
+// app.use('/sprites', express.static(process.cwd() + '/sprites')); // ◘ MINE ◘
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
