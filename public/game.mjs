@@ -204,7 +204,7 @@ const animate = () => {
     ctx.drawImage(playerAvatar, playerFrame, 0, spriteWidth, 78, player.x, player.y, player.width, player.height) //25,50th, currentPlayers[rival].height)
     }
     playerAvatar.onerror = function() {
-    console.error('Error loading image:', collectibleAvatar.src);
+    console.error('Error loading image:', playerAvatar.src);
     };
   
     // --- ENABLE COLLISION DETECTION ---
